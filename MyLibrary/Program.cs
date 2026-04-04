@@ -1,2 +1,27 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using Velopack;
+using Velopack.Sources;
+
+VelopackApp.Build().Run();
+
+var mgr = new UpdateManager(
+    new GithubSource("https://github.com/edwardyum/MyLibrary", null, false));
+
+Console.WriteLine("Проверяем обновления...");
+var newVersion = await mgr.CheckForUpdatesAsync();
+
+if (newVersion != null)
+{
+    Console.WriteLine($"Доступна новая версия: {newVersion.TargetFullRelease.Version}");
+    Console.WriteLine("Устанавливаем обновление...");
+    await mgr.DownloadUpdatesAsync(newVersion);
+    mgr.ApplyUpdatesAndRestart(newVersion);
+}
+else
+{
+    Console.WriteLine("Обновлений нет.");
+}
+
+var calculator = new MyLibrary.Calculator();
+Console.WriteLine($"2 + 3 = {calculator.Add(2, 3)}");
+Console.WriteLine("Нажмите любую клавишу...");
+Console.ReadKey();
