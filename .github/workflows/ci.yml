@@ -51,8 +51,10 @@ jobs:
     - name: Pack with Velopack
       run: |
         $version = "${{ github.event.release.tag_name }}" -replace '^v', ''
-        vpk pack -u MyLibrary -v $version -p publish/win -e MyLibrary.exe
+        vpk pack -u MyLibrary -v $version -p publish/win -e MyLibrary.exe --outputDir releases
       shell: pwsh
 
     - name: Upload to GitHub Release
-      run: vpk upload github --repoUrl https://github.com/edwardyum/MyLibrary --token ${{ secrets.GITHUB_TOKEN }} --tag ${{ github.event.release.tag_name }}
+      uses: softprops/action-gh-release@v2
+      with:
+        files: releases/*
