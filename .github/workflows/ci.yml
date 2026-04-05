@@ -46,8 +46,15 @@ jobs:
     - name: Publish
       run: dotnet publish MyLibrary/MyLibrary.csproj -c Release -r win-x64 --self-contained -o publish/win
 
+    - name: Get version
+      id: version
+      run: |
+        $version = "${{ github.event.release.tag_name }}" -replace '^v', ''
+        echo "VERSION=$version" >> $env:GITHUB_OUTPUT
+      shell: pwsh
+
     - name: Pack with Velopack
-      run: vpk pack -u MyLibrary -v ${{ github.event.release.tag_name }} -p publish/win -e MyLibrary.exe
+      run: vpk pack -u MyLibrary -v ${{ steps.version.outputs.VERSION }} -p publish/win -e MyLibrary.exe
 
     - name: Upload to GitHub Release
       run: vpk upload github --repoUrl https://github.com/edwardyum/MyLibrary --token ${{ secrets.GITHUB_TOKEN }} --tag ${{ github.event.release.tag_name }}
