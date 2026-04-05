@@ -23,5 +23,8 @@ else
 
 var calculator = new MyLibrary.Calculator();
 Console.WriteLine($"2 + 3 = {calculator.Add(2, 3)}");
+Console.WriteLine($"10 - 4 = {calculator.Subtract(10, 4)}");
+Console.WriteLine($"3 * 4 = {calculator.Multiply(3, 4)}");
+Console.WriteLine("Версия 0.6.0 — новые функции добавлены!");
 Console.WriteLine("Нажмите любую клавишу...");
 Console.ReadKey();
